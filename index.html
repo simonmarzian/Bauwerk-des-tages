@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAUWERK — Architekturmagazin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F5F1E7;
+    --paper-deep: #ECE5D4;
+    --ink: #171410;
+    --ink-soft: #5B5346;
+    --rust: #B5451D;
+    --rust-deep: #8A3316;
+    --teal: #1F3B36;
+    --line: #D9D0BB;
+    --white: #FFFEFB;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    font-family:'Source Serif 4', serif;
+    color:var(--ink);
+    padding-bottom:60px;
+  }
+  a{color:inherit;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px;}
+
+  .masthead{border-bottom:3px solid var(--ink);padding:18px 20px 14px;}
+  .masthead-inner{max-width:960px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .wordmark{font-family:'Big Shoulders Display', sans-serif;font-weight:800;font-size:clamp(38px,7vw,64px);letter-spacing:.01em;line-height:.85;color:var(--ink);text-transform:uppercase;}
+  .wordmark span{color:var(--rust);}
+  .masthead-meta{font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);text-align:right;line-height:1.6;}
+  .masthead-tag{font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--rust-deep);padding-top:6px;border-top:1px solid var(--line);margin-top:8px;max-width:960px;margin-left:auto;margin-right:auto;}
+
+  .navbar{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;flex-wrap:wrap;gap:8px;font-family:'IBM Plex Mono', monospace;font-size:11px;}
+  .navbar .issue-label{color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase;}
+  .navbtns{display:flex;gap:6px;}
+  .btn{font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;background:transparent;border:1px solid var(--ink);color:var(--ink);padding:7px 12px;cursor:pointer;border-radius:2px;transition:.15s;}
+  .btn:hover{background:var(--ink);color:var(--paper);}
+  .btn.primary{background:var(--rust);border-color:var(--rust);color:var(--white);}
+  .btn.primary:hover{background:var(--rust-deep);border-color:var(--rust-deep);}
+  .btn:disabled{opacity:.35;cursor:default;}
+  .btn:disabled:hover{background:transparent;color:var(--ink);}
+
+  .hero{position:relative;max-width:960px;margin:6px auto 0;height:min(62vw, 460px);min-height:280px;overflow:hidden;background:var(--ink);}
+  .hero img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(0.92) contrast(1.03);}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,8,6,0.05) 0%, rgba(10,8,6,0.15) 45%, rgba(8,6,4,0.88) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:26px 28px 20px;}
+  .hero-eyebrow{font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E8B98A;margin-bottom:8px;}
+  .hero h1{font-family:'Big Shoulders Display', sans-serif;font-weight:800;font-size:clamp(32px,6vw,58px);line-height:.92;color:var(--white);margin:0 0 8px;text-transform:uppercase;max-width:80%;}
+  .hero-sub{font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:.04em;color:#EDE6D6;text-transform:uppercase;}
+  .photo-credit{position:absolute;bottom:8px;right:10px;font-family:'IBM Plex Mono', monospace;font-size:9.5px;color:rgba(255,255,255,.55);letter-spacing:.03em;}
+
+  .content-grid{display:grid;grid-template-columns: 260px 1fr;gap:0;max-width:960px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line);}
+  @media (max-width:720px){ .content-grid{grid-template-columns:1fr;} }
+
+  .sidebar{border-right:1px solid var(--line);padding:26px 22px;background:var(--paper-deep);}
+  @media (max-width:720px){ .sidebar{border-right:none;border-bottom:1px solid var(--line);} }
+  .steckbrief-title{font-family:'IBM Plex Mono', monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--rust-deep);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ink);}
+  .sb-row{margin-bottom:16px;}
+  .sb-label{font-family:'IBM Plex Mono', monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:3px;}
+  .sb-value{font-size:15px;line-height:1.35;color:var(--ink);}
+  .pullquote{margin-top:24px;padding-top:18px;border-top:1px solid var(--line);font-family:'Source Serif 4', serif;font-style:italic;font-size:16.5px;line-height:1.5;color:var(--teal);}
+  .pullquote::before{content:"\201C";color:var(--rust);font-size:1.3em;line-height:0;vertical-align:-0.15em;}
+
+  .article-col{padding:30px 32px 10px;}
+  @media (max-width:720px){ .article-col{padding:22px 20px 6px;} }
+  .readtime{font-family:'IBM Plex Mono', monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:22px;}
+  .article-col p{font-size:18px;line-height:1.72;color:var(--ink);margin:0 0 20px;}
+  .article-col p:first-of-type::first-letter{font-family:'Big Shoulders Display', sans-serif;font-weight:800;font-size:3.6em;float:left;line-height:.8;padding-right:8px;padding-top:4px;color:var(--rust);}
+
+  .archive-section{max-width:960px;margin:34px auto 0;padding:0 20px;}
+  .archive-title{font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--ink);}
+  .archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+  .archive-card{cursor:pointer;border:1px solid var(--line);background:var(--white);overflow:hidden;transition:.15s;position:relative;}
+  .archive-card:hover{border-color:var(--rust);}
+  .archive-card.active{border-color:var(--rust);border-width:2px;}
+  .archive-thumb{width:100%;height:80px;object-fit:cover;display:block;filter:saturate(.9);}
+  .archive-label{font-family:'IBM Plex Mono', monospace;font-size:9.5px;padding:6px 7px;line-height:1.3;color:var(--ink);}
+  .archive-seen{position:absolute;top:4px;right:4px;width:14px;height:14px;background:var(--rust);color:var(--white);border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono', monospace;}
+
+  footer.note{max-width:960px;margin:40px auto 0;padding:16px 20px 0;text-align:center;font-family:'IBM Plex Mono', monospace;font-size:10.5px;color:var(--ink-soft);letter-spacing:.03em;border-top:1px solid var(--line);}
+  footer.note a{color:var(--rust-deep);cursor:pointer;text-decoration:underline;}
+
+  .cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:100;background:var(--ink);color:var(--paper);padding:18px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.3);display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:space-between;}
+  .cookie-banner.hidden{display:none;}
+  .cookie-text{max-width:640px;font-family:'Source Serif 4', serif;font-size:14.5px;line-height:1.5;}
+  .cookie-text b{color:#E8B98A;}
+  .cookie-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .cookie-btn{font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:9px 14px;cursor:pointer;border-radius:2px;border:1px solid var(--paper);background:transparent;color:var(--paper);}
+  .cookie-btn.accept{background:var(--rust);border-color:var(--rust);color:var(--white);}
+  .cookie-btn:hover{opacity:.85;}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(10,8,6,.6);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;}
+  .modal-overlay.hidden{display:none;}
+  .modal-box{background:var(--paper);max-width:520px;width:100%;max-height:80vh;overflow-y:auto;border:1px solid var(--ink);padding:26px 26px 22px;position:relative;}
+  .modal-title{font-family:'Big Shoulders Display', sans-serif;font-weight:800;font-size:26px;text-transform:uppercase;margin:0 0 16px;color:var(--ink);}
+  .modal-close{position:absolute;top:16px;right:18px;cursor:pointer;font-family:'IBM Plex Mono', monospace;font-size:13px;color:var(--ink-soft);background:none;border:none;}
+  .modal-box p, .modal-box li{font-size:14.5px;line-height:1.6;color:var(--ink);}
+  .modal-box h3{font-family:'IBM Plex Mono', monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--rust-deep);margin:18px 0 6px;}
+  .cookie-toggle-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:14px;}
+  .cookie-toggle-row:last-of-type{border-bottom:none;}
+  .toggle-label{font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:.05em;text-transform:uppercase;}
+  .toggle-desc{font-size:13px;color:var(--ink-soft);margin-top:2px;max-width:340px;}
+  .switch{position:relative;width:40px;height:22px;flex-shrink:0;}
+  .switch input{opacity:0;width:0;height:0;}
+  .slider{position:absolute;inset:0;background:#ccc;border-radius:22px;cursor:pointer;transition:.2s;}
+  .slider::before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s;}
+  input:checked + .slider{background:var(--rust);}
+  input:checked + .slider::before{transform:translateX(18px);}
+  input:disabled + .slider{opacity:.5;cursor:default;}
+  .modal-save{margin-top:20px;width:100%;padding:12px;background:var(--rust);color:var(--white);border:none;font-family:'IBM Plex Mono', monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;}
+  .modal-save:disabled{opacity:.5;cursor:default;}
+  .sf-input{width:100%;padding:9px 10px;margin-bottom:2px;font-family:'Source Serif 4', serif;font-size:14.5px;background:var(--white);border:1px solid var(--line);color:var(--ink);border-radius:2px;}
+  .sf-input:focus{outline:none;border-color:var(--rust);}
+  textarea.sf-input{resize:vertical;font-family:'Source Serif 4', serif;}
+  .sf-status{margin-top:10px;font-family:'IBM Plex Mono', monospace;font-size:11.5px;letter-spacing:.03em;text-align:center;min-height:1.4em;}
+  .sf-status.ok{color:var(--teal);}
+  .sf-status.err{color:var(--rust-deep);}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="wordmark">BAU<span>WERK</span></div>
+    <div class="masthead-meta">Architekturmagazin<br>Ausgabe <span id="issueNum">—</span> · <span id="issueDate">—</span></div>
+  </div>
+  <div class="masthead-tag">Ein Gebäude. Jeden Tag. Genau hingeschaut.</div>
+</div>
+
+<div class="navbar">
+  <div class="issue-label" id="dayLabel">—</div>
+  <div class="navbtns">
+    <button class="btn" id="prevBtn">← Zurück</button>
+    <button class="btn primary" id="todayBtn">Heute</button>
+    <button class="btn" id="randomBtn">Zufällig</button>
+    <button class="btn" id="nextBtn">Weiter →</button>
+    <button class="btn" id="suggestBtn">+ Gebäude vorschlagen</button>
+  </div>
+</div>
+
+<div class="hero">
+  <img id="heroImg" src="" alt="">
+  <div class="hero-overlay">
+    <div class="hero-eyebrow">Gebäude der Ausgabe</div>
+    <h1 id="bName">—</h1>
+    <div class="hero-sub" id="bSub">—</div>
+  </div>
+  <div class="photo-credit" id="photoCredit"></div>
+</div>
+
+<div class="content-grid">
+  <div class="sidebar">
+    <div class="steckbrief-title">Steckbrief</div>
+    <div class="sb-row"><div class="sb-label">Architekt·in</div><div class="sb-value" id="tbArchitect">—</div></div>
+    <div class="sb-row"><div class="sb-label">Baujahr</div><div class="sb-value" id="tbYear">—</div></div>
+    <div class="sb-row"><div class="sb-label">Standort</div><div class="sb-value" id="tbLocation">—</div></div>
+    <div class="sb-row"><div class="sb-label">Stil</div><div class="sb-value" id="tbStyle">—</div></div>
+    <div class="pullquote" id="teaser">—</div>
+  </div>
+  <div class="article-col">
+    <div class="readtime" id="readTime">— Min Lesezeit</div>
+    <div id="articleBody"></div>
+  </div>
+</div>
+
+<div class="archive-section">
+  <div class="archive-title">Aus dem Archiv</div>
+  <div class="archive-grid" id="archive"></div>
+</div>
+
+<footer class="note">
+  Jeden Tag ein neues Bauwerk · Fotos: Wikimedia Commons (freie Lizenzen, Quellenangabe im Bild) ·
+  <a id="privacyLink">Datenschutz &amp; Cookies</a> ·
+  <a id="suggestLink">Gebäude vorschlagen</a>
+</footer>
+
+<div class="modal-overlay hidden" id="suggestModal">
+  <div class="modal-box">
+    <button class="modal-close" id="closeSuggest">✕ Schließen</button>
+    <div class="modal-title">Gebäude vorschlagen</div>
+    <p>Kennst du ein Bauwerk, das hier auftauchen sollte? Schick uns deinen Vorschlag – interessante Einsendungen nehmen wir nach Prüfung in die Sammlung auf. Bitte nur Gebäude mit frei lizenzierten Fotos (z. B. auf Wikimedia Commons).</p>
+    <form id="suggestForm">
+      <h3>Name des Gebäudes</h3>
+      <input class="sf-input" id="sfName" type="text" required placeholder="z. B. Elbphilharmonie">
+      <h3>Architekt·in (falls bekannt)</h3>
+      <input class="sf-input" id="sfArchitect" type="text" placeholder="z. B. Herzog & de Meuron">
+      <h3>Standort</h3>
+      <input class="sf-input" id="sfLocation" type="text" placeholder="z. B. Hamburg, Deutschland">
+      <h3>Warum lohnt sich dieses Gebäude?</h3>
+      <textarea class="sf-input" id="sfReason" rows="4" placeholder="Was macht es architektonisch besonders?"></textarea>
+      <h3>Deine E-Mail (optional, für Rückfragen)</h3>
+      <input class="sf-input" id="sfEmail" type="email" placeholder="du@beispiel.de">
+      <button type="submit" class="modal-save">Vorschlag senden</button>
+      <div id="sfStatus" class="sf-status"></div>
+    </form>
+  </div>
+</div>
+
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-text">
+    <b>Diese Seite verwendet lokale Speicherung.</b> Damit „Heute" jeden Tag stimmt und gemerkt wird, welche Ausgaben du schon gelesen hast, speichert BAUWERK ein paar Daten auf diesem Gerät. Kein Tracking, keine Werbung, keine Weitergabe an Dritte.
+  </div>
+  <div class="cookie-actions">
+    <button class="cookie-btn" id="cookieSettingsBtn">Einstellungen</button>
+    <button class="cookie-btn" id="cookieNecessaryBtn">Nur notwendige</button>
+    <button class="cookie-btn accept" id="cookieAcceptBtn">Alle akzeptieren</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="settingsModal">
+  <div class="modal-box">
+    <button class="modal-close" id="closeSettings">✕ Schließen</button>
+    <div class="modal-title">Cookie-Einstellungen</div>
+    <p>BAUWERK ist ein kleines, werbefreies Projekt. Es gibt keine Analyse-Tools und keine Drittanbieter — nur lokale Speicherung im Browser, für zwei Zwecke:</p>
+
+    <div class="cookie-toggle-row">
+      <div>
+        <div class="toggle-label">Notwendig</div>
+        <div class="toggle-desc">Speichert, welche Auswahl du hier getroffen hast. Ohne das würde dich der Banner bei jedem Besuch erneut fragen.</div>
+      </div>
+      <label class="switch"><input type="checkbox" checked disabled><span class="slider"></span></label>
+    </div>
+
+    <div class="cookie-toggle-row">
+      <div>
+        <div class="toggle-label">Funktional</div>
+        <div class="toggle-desc">Merkt sich, welche Gebäude du schon gelesen hast (Häkchen im Archiv). Ohne Zustimmung startet die Leseliste bei jedem Besuch neu bei null.</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="functionalToggle"><span class="slider"></span></label>
+    </div>
+
+    <button class="modal-save" id="saveSettings">Auswahl speichern</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="privacyModal">
+  <div class="modal-box">
+    <button class="modal-close" id="closePrivacy">✕ Schließen</button>
+    <div class="modal-title">Datenschutz</div>
+    <h3>Wer betreibt diese Seite</h3>
+    <p>BAUWERK ist ein privates, nicht-kommerzielles Projekt ohne eigenes Unternehmen dahinter. Es gibt keine Registrierung, keine Nutzerkonten und keine Verarbeitung personenbezogener Daten im klassischen Sinn.</p>
+    <h3>Was gespeichert wird</h3>
+    <p>Ausschließlich lokal in deinem Browser (kein Server, keine Datenbank): deine Cookie-Auswahl und — falls du „Funktional" zugestimmt hast — welche Ausgaben du bereits geöffnet hast. Diese Daten verlassen dein Gerät nie.</p>
+    <h3>Was nicht passiert</h3>
+    <p>Kein Tracking, keine Analyse-Tools, keine Werbenetzwerke, keine Cookies von Drittanbietern, keine Weitergabe an irgendjemanden.</p>
+    <h3>Bildquellen</h3>
+    <p>Alle Fotografien stammen von Wikimedia Commons unter freien Lizenzen (CC BY-SA, CC0 oder gemeinfrei). Fotograf·in bzw. Quelle steht jeweils klein im Bild.</p>
+    <h3>Auswahl ändern</h3>
+    <p>Du kannst deine Cookie-Auswahl jederzeit über den Link „Datenschutz &amp; Cookies" im Footer erneut öffnen und anpassen.</p>
+  </div>
+</div>
+
+<script>
+let BUILDINGS = [];
+const CONSENT_KEY = 'bauwerk:consent';
+const SEEN_KEY = 'bauwerk:seen';
+
+// Formspree-Endpunkt für den "Gebäude vorschlagen"-Vorgang.
+// Ersetze DEIN_FORM_ID durch die ID, die du bei https://formspree.io bekommst
+// (siehe ANLEITUNG.md, Abschnitt "Einsendungen entgegennehmen").
+const SUGGEST_ENDPOINT = 'https://formspree.io/f/DEIN_FORM_ID';
+
+function commonsUrl(filename, width){
+  return 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(filename) + '?width=' + width;
+}
+function dayOfYear(d){
+  const start = new Date(d.getFullYear(), 0, 0);
+  return Math.floor((d - start) / 86400000);
+}
+let TODAY_INDEX = 0;
+let currentIndex = 0;
+let seen = new Set();
+let consent = null;
+
+// --- Speicherung: normales Browser-localStorage (funktioniert auf jedem Webhost) ---
+function loadConsent(){
+  try{
+    const raw = localStorage.getItem(CONSENT_KEY);
+    if(raw) consent = JSON.parse(raw);
+  }catch(e){ consent = null; }
+}
+function saveConsent(c){
+  consent = c;
+  try{ localStorage.setItem(CONSENT_KEY, JSON.stringify(c)); }
+  catch(e){ console.warn('consent save failed', e); }
+}
+function loadSeen(){
+  if(!consent || !consent.functional) return;
+  try{
+    const raw = localStorage.getItem(SEEN_KEY);
+    if(raw) seen = new Set(JSON.parse(raw));
+  }catch(e){}
+}
+function saveSeen(){
+  if(!consent || !consent.functional) return;
+  try{ localStorage.setItem(SEEN_KEY, JSON.stringify([...seen])); }
+  catch(e){ console.warn('seen save failed', e); }
+}
+
+function estimateReadTime(paragraphs){
+  const words = paragraphs.join(' ').trim().split(/\s+/).length;
+  return Math.max(1, Math.round(words / 190));
+}
+
+function render(){
+  const b = BUILDINGS[currentIndex];
+  document.getElementById('bName').textContent = b.name;
+  document.getElementById('bSub').textContent = b.location + ' · ' + b.year;
+  document.getElementById('tbArchitect').textContent = b.architect;
+  document.getElementById('tbYear').textContent = b.year;
+  document.getElementById('tbLocation').textContent = b.location;
+  document.getElementById('tbStyle').textContent = b.style;
+  document.getElementById('teaser').textContent = b.teaser;
+  document.getElementById('photoCredit').textContent = b.credit;
+
+  const heroImg = document.getElementById('heroImg');
+  heroImg.src = commonsUrl(b.image, 1400);
+  heroImg.alt = b.name;
+
+  const body = document.getElementById('articleBody');
+  body.innerHTML = '';
+  b.text.forEach(p=>{
+    const el = document.createElement('p');
+    el.textContent = p;
+    body.appendChild(el);
+  });
+
+  document.getElementById('readTime').textContent = estimateReadTime(b.text) + ' Min Lesezeit';
+
+  const isToday = currentIndex === TODAY_INDEX;
+  document.getElementById('dayLabel').textContent = isToday
+    ? 'Heute · ' + new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'long',year:'numeric'})
+    : 'Archiv · Ausgabe ' + (currentIndex+1) + ' von ' + BUILDINGS.length;
+  document.getElementById('todayBtn').disabled = isToday;
+  document.getElementById('issueNum').textContent = String(currentIndex+1).padStart(3,'0');
+  document.getElementById('issueDate').textContent = new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'});
+
+  seen.add(currentIndex);
+  saveSeen();
+
+  renderArchive();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderArchive(){
+  const wrap = document.getElementById('archive');
+  wrap.innerHTML = '';
+  BUILDINGS.forEach((b,i)=>{
+    const card = document.createElement('div');
+    card.className = 'archive-card' + (i===currentIndex ? ' active':'');
+    card.innerHTML =
+      '<img class="archive-thumb" src="' + commonsUrl(b.image, 260) + '" alt="' + b.name + '">' +
+      '<div class="archive-label">' + b.name + '</div>' +
+      (seen.has(i) ? '<div class="archive-seen">✓</div>' : '');
+    card.addEventListener('click', ()=>{ currentIndex = i; render(); });
+    wrap.appendChild(card);
+  });
+}
+
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+  currentIndex = (currentIndex - 1 + BUILDINGS.length) % BUILDINGS.length;
+  render();
+});
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  currentIndex = (currentIndex + 1) % BUILDINGS.length;
+  render();
+});
+document.getElementById('todayBtn').addEventListener('click', ()=>{
+  currentIndex = TODAY_INDEX;
+  render();
+});
+document.getElementById('randomBtn').addEventListener('click', ()=>{
+  let r;
+  do{ r = Math.floor(Math.random()*BUILDINGS.length); }while(r===currentIndex && BUILDINGS.length>1);
+  currentIndex = r;
+  render();
+});
+
+const banner = document.getElementById('cookieBanner');
+const settingsModal = document.getElementById('settingsModal');
+const privacyModal = document.getElementById('privacyModal');
+const suggestModal = document.getElementById('suggestModal');
+const functionalToggle = document.getElementById('functionalToggle');
+
+function hideBanner(){ banner.classList.add('hidden'); }
+function showBanner(){ banner.classList.remove('hidden'); }
+function openModal(m){ m.classList.remove('hidden'); }
+function closeModal(m){ m.classList.add('hidden'); }
+
+document.getElementById('cookieAcceptBtn').addEventListener('click', ()=>{
+  saveConsent({necessary:true, functional:true});
+  hideBanner();
+  loadSeen();
+  renderArchive();
+});
+document.getElementById('cookieNecessaryBtn').addEventListener('click', ()=>{
+  saveConsent({necessary:true, functional:false});
+  hideBanner();
+});
+document.getElementById('cookieSettingsBtn').addEventListener('click', ()=>{
+  functionalToggle.checked = !!(consent && consent.functional);
+  openModal(settingsModal);
+});
+document.getElementById('closeSettings').addEventListener('click', ()=> closeModal(settingsModal));
+document.getElementById('saveSettings').addEventListener('click', ()=>{
+  saveConsent({necessary:true, functional: functionalToggle.checked});
+  closeModal(settingsModal);
+  hideBanner();
+  if(consent.functional){ loadSeen(); renderArchive(); }
+  else { seen = new Set(); renderArchive(); }
+});
+document.getElementById('privacyLink').addEventListener('click', ()=> openModal(privacyModal));
+document.getElementById('closePrivacy').addEventListener('click', ()=> closeModal(privacyModal));
+
+// --- "Gebäude vorschlagen"-Formular ---
+document.getElementById('suggestBtn').addEventListener('click', ()=> openModal(suggestModal));
+document.getElementById('suggestLink').addEventListener('click', ()=> openModal(suggestModal));
+document.getElementById('closeSuggest').addEventListener('click', ()=> closeModal(suggestModal));
+
+document.getElementById('suggestForm').addEventListener('submit', async (ev)=>{
+  ev.preventDefault();
+  const statusEl = document.getElementById('sfStatus');
+  const submitBtn = ev.target.querySelector('button[type=submit]');
+  const payload = {
+    name: document.getElementById('sfName').value.trim(),
+    architect: document.getElementById('sfArchitect').value.trim(),
+    location: document.getElementById('sfLocation').value.trim(),
+    reason: document.getElementById('sfReason').value.trim(),
+    email: document.getElementById('sfEmail').value.trim()
+  };
+  if(!payload.name){
+    statusEl.textContent = 'Bitte gib mindestens den Namen des Gebäudes an.';
+    statusEl.className = 'sf-status err';
+    return;
+  }
+  submitBtn.disabled = true;
+  statusEl.textContent = 'Wird gesendet …';
+  statusEl.className = 'sf-status';
+  try{
+    const res = await fetch(SUGGEST_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if(res.ok){
+      statusEl.textContent = 'Danke! Dein Vorschlag wurde übermittelt.';
+      statusEl.className = 'sf-status ok';
+      ev.target.reset();
+    } else {
+      throw new Error('Formspree responded with ' + res.status);
+    }
+  }catch(e){
+    statusEl.textContent = 'Senden fehlgeschlagen. Bitte später erneut versuchen.';
+    statusEl.className = 'sf-status err';
+  }finally{
+    submitBtn.disabled = false;
+  }
+});
+
+// --- Gebäudedaten laden (aus data/buildings.json, wird von der Automatisierung erweitert) ---
+async function loadBuildings(){
+  const res = await fetch('data/buildings.json', {cache:'no-store'});
+  if(!res.ok) throw new Error('buildings.json konnte nicht geladen werden');
+  BUILDINGS = await res.json();
+}
+
+(async function init(){
+  loadConsent();
+  if(consent){
+    hideBanner();
+    if(consent.functional) loadSeen();
+  } else {
+    showBanner();
+  }
+  try{
+    await loadBuildings();
+  }catch(e){
+    document.getElementById('articleBody').innerHTML =
+      '<p>Die Gebäudedaten konnten nicht geladen werden. Läuft die Seite über einen echten Webserver (nicht per Doppelklick als Datei)?</p>';
+    console.error(e);
+    return;
+  }
+  TODAY_INDEX = dayOfYear(new Date()) % BUILDINGS.length;
+  currentIndex = TODAY_INDEX;
+  render();
+})();
+</script>
+</body>
+</html>
